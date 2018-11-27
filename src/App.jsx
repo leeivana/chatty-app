@@ -7,7 +7,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: { name: "Bob" },
+      currentUser: { name: "Anonymous" },
       messages: [
         {
           username: "Bob",
@@ -30,25 +30,24 @@ class App extends Component {
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 
-  addMessage = (message, username) => {
-    const currentUser = username !== this.state.currentUser.name ? username : this.state.currentUser.name;
+  addMessage = (message, name) => {
+    const updatedUser = name.length > 0 ? name : 'Anonymous';
     const newMessage = {
       id: this.generateRandomId(),
-      username: this.state.currentUser.name,
+      username: updatedUser,
       content: message,
     };
     const oldMessage = this.state.messages;
     const newMessages = [...oldMessage, newMessage];
     this.setState((currentState) => {
       return {
-        currentUser: {name: currentUser},
+        currentUser: {name: updatedUser},
         messages: newMessages,
       }
     })
   }
 
   render() {
-
     return (
       <div>
         <MessageList messagesList={this.state.messages} />

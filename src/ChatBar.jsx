@@ -5,7 +5,7 @@ class Chatbar extends Component {
     super(props);
     this.state = {
       message: '',
-      username: '',
+      username: 'Anonymous',
     }
   }
 
@@ -27,7 +27,7 @@ class Chatbar extends Component {
       this.setState(currentState => {
         return {
           message: '',
-          username: '',
+          username: this.state.username,
         }
       });
       e.target.value = '';
@@ -42,7 +42,7 @@ class Chatbar extends Component {
           name="username"
           className="chatbar-username"
           placeholder="Your Name (Optional)"
-          defaultValue={this.props.defaultName}
+          defaultValue={this.state.username}
           onChange={this.handleInputChange}
         />
         <input
