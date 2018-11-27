@@ -21,8 +21,10 @@ class App extends Component {
         },
       ]
     };
+   this.socket = new WebSocket('ws://localhost:3001');
   }
 
+  //generates random id for messages
   generateRandomId = () => {
     const S4 = () => {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -30,6 +32,7 @@ class App extends Component {
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 
+  //adds new message to global state
   addMessage = (message, name) => {
     const updatedUser = name.length > 0 ? name : 'Anonymous';
     const newMessage = {
@@ -44,7 +47,8 @@ class App extends Component {
         currentUser: {name: updatedUser},
         messages: newMessages,
       }
-    })
+    });
+    // this.socket.send(JSON.stringify(newMessage));
   }
 
   render() {
