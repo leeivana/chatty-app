@@ -1,21 +1,25 @@
 import React, {Component} from 'react';
 
-const RenderChatbar = () => {
-  return (
+class Chatbar extends Component {
+  render(){
+      return (
     <div>
     <footer className="chatbar">
       <input
         className="chatbar-username"
         placeholder="Your Name (Optional)"
+        defaultValue={this.props.defaultName}
       />
       <input
         className="chatbar-message"
         placeholder="Type a message and hit ENTER"
+        defaultValue=""
       />
       </footer>
     </div>
-  );
+    );
+  }
 }
 
 
-export default RenderChatbar;
+export default Chatbar;
