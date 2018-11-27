@@ -21,7 +21,7 @@ class App extends Component {
         },
       ]
     };
-   this.socket = new WebSocket('ws://localhost:3001');
+    this.socket = new WebSocket('ws://localhost:3001');
   }
 
   //generates random id for messages
@@ -30,6 +30,12 @@ class App extends Component {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     };
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
+
+  componentDidMount(){
+    this.socket.addEventListener('open', (e) => {
+      console.log('listening')
+    });
   }
 
   //adds new message to global state
@@ -48,7 +54,7 @@ class App extends Component {
         messages: newMessages,
       }
     });
-    // this.socket.send(JSON.stringify(newMessage));
+    this.socket.send(JSON.stringify(newMessage));
   }
 
   render() {
