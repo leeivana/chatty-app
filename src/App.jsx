@@ -28,10 +28,13 @@ class App extends Component {
       console.log('listening')
     });
 
+  const isUrl = new RegExp('^(https?:\/\/)?');
+
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
       switch(payload.type) {
         case 'postMessage':
+
           const newMessage = payload;
           const oldMessage = this.state.messages;
           const newMessages = [...oldMessage, newMessage];
@@ -83,7 +86,6 @@ class App extends Component {
     return (
       <div>
         <Navbar numOfUsers={this.state.numOfUsers}/>
-        <div>{this.state.numOfUsers} User(s) Online</div>
         <MessageList messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
         <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
