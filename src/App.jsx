@@ -9,13 +9,11 @@ class App extends Component {
     this.state = {
       currentUser: { name: "Anonymous" },
       messages: [],
-      previousUser: {name: ''},
     };
     this.socket = new WebSocket('ws://localhost:3001');
 
   }
 
-  //generates random id for messages
   generateRandomId = () => {
     const S4 = () => {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -30,37 +28,59 @@ class App extends Component {
     });
 
     this.socket.onmessage =  this.incoming = (event) => {
-      const newMessage = JSON.parse(event.data);
-      const oldMessage = this.state.messages;
-      const newMessages = [...oldMessage, newMessage];
-      this.setState((currentState) => {
-      return {
-        currentUser: {name: newMessage.username},
-        messages: newMessages,
-        previousUser: {name: currentState.currentUser.name}
+      const payload = JSON.parse(event.data);
+      switch(payload.type) {
+        case 'postMessage':
+          const newMessage = payload;
+          const oldMessage = this.state.messages;
+          const newMessages = [...oldMessage, newMessage];
+          this.setState((currentState) => {
+            return {
+              currentUser: {name: newMessage.username},
+              messages: newMessages,
+            }
+          });
+          break;
+        case 'postNotification':
+          const notification = payload.content;
+          this.setState({
+            currentUser: notification,
+          })
+          break;
+        default:
+        throw new Error('Unidentified data type' + payload.type);
       }
-      });
+
       console.log(this.state.messages);
     }
   }
 
   //adds new message to global state
   addMessage = (message, name) => {
-    const updatedUser = name.length > 0 ? name : 'Anonymous';
     const newMessage = {
+      type: 'incomingMessage',
       id: this.generateRandomId(),
-      username: updatedUser,
+      username: name,
       content: message,
     };
     this.socket.send(JSON.stringify(newMessage));
+    console.log(newMessage);
   }
 
+  updateNotification = (notification) => {
+    const newMessage = {
+      type: 'incomingNotification',
+      content: `${notification}`,
+    };
+    this.socket.send(JSON.stringify(newMessage));
+    console.log(JSON.stringify(newMessage));
+  }
   render() {
     return (
       <div>
         <MessageList messagesList={this.state.messages} />
-        <Messages prevName={this.state.previousUser.name} name={this.state.currentUser.name}/>
-        <Chatbar defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
+        <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
+        <Messages newInfo={this.state.currentUser.name}/>
       </div>
     );
   }
