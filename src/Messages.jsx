@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 const Messages = props => {
   return (
-      <div className="message system">{props.newInfo}</div>
+      <div className="message system">Old Name: {props.oldInfo} <br/>  New Name: {props.newInfo}</div>
   );
 }
 

@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
 import MessageList from "./MessageList.jsx";
 import Messages from "./Messages.jsx";
+import Navbar from './Navbar.jsx';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: { name: "Anonymous" },
+      currentUser: { name: "Anonymous", prevName: ''},
       messages: [],
+      numOfUsers: 1,
     };
     this.socket = new WebSocket('ws://localhost:3001');
 
@@ -19,6 +21,10 @@ class App extends Component {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     };
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
+
+  generateRandomUserId = () => {
+    return '_' + Math.random().toString(36).substr(2, 9);
   }
 
   componentDidMount = () =>{
@@ -38,20 +44,25 @@ class App extends Component {
             return {
               currentUser: {name: newMessage.username},
               messages: newMessages,
+              numOfUsers: payload.numOfUsers,
             }
           });
           break;
         case 'postNotification':
           const notification = payload.content;
+          this.setState((currentState) => {
+            return{
+              currentUser: {name: notification, prevName: ''}
+            }
+          });
+        case 'num':
           this.setState({
-            currentUser: notification,
-          })
+            numOfUsers: payload.numOfUsers,
+          });
           break;
         default:
         throw new Error('Unidentified data type' + payload.type);
       }
-
-      console.log(this.state.messages);
     }
   }
 
@@ -62,9 +73,9 @@ class App extends Component {
       id: this.generateRandomId(),
       username: name,
       content: message,
+      numOfUsers: this.state.numOfUsers,
     };
     this.socket.send(JSON.stringify(newMessage));
-    console.log(newMessage);
   }
 
   updateNotification = (notification) => {
@@ -73,14 +84,17 @@ class App extends Component {
       content: `${notification}`,
     };
     this.socket.send(JSON.stringify(newMessage));
-    console.log(JSON.stringify(newMessage));
   }
   render() {
     return (
       <div>
+        <Navbar />
+
+        <div>{this.state.numOfUsers} User(s) Online</div>
+
         <MessageList messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
-        <Messages newInfo={this.state.currentUser.name}/>
+        <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
       </div>
     );
   }
