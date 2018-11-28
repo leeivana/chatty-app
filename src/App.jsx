@@ -13,7 +13,6 @@ class App extends Component {
       numOfUsers: 1,
     };
     this.socket = new WebSocket('ws://localhost:3001');
-
   }
 
   generateRandomId = () => {
@@ -21,10 +20,6 @@ class App extends Component {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     };
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-  }
-
-  generateRandomUserId = () => {
-    return '_' + Math.random().toString(36).substr(2, 9);
   }
 
   componentDidMount = () =>{
@@ -66,7 +61,6 @@ class App extends Component {
     }
   }
 
-  //adds new message to global state
   addMessage = (message, name) => {
     const newMessage = {
       type: 'incomingMessage',

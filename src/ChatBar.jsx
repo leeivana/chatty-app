@@ -19,7 +19,6 @@ class Chatbar extends Component {
     });
   }
 
-
    handleKeypress = (e) => {
     if(e.key === 'Enter'){
       this.props.addMessage(this.state.message, this.state.username);
