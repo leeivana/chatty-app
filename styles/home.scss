@@ -1,18 +1,24 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
-
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web");
 body {
-  background: white;
+  background: #EEEEEE;
   color: black;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Titillium Web", sans-serif;
   font-size: 14px;
   margin: 70px 0;
 }
 
+#mainContainer{
+  display: flex;
+  width: 50% !important;
+  justify-content: space-around;
+
+}
+
 .chatbar {
-  background: tomato;
-  border-top: 1px solid black;
   bottom: 0;
+  border-top: gray 0.2px solid;
   display: flex;
   left: 0;
   padding: 5px;
@@ -31,52 +37,27 @@ body {
 }
 
 .chatbar-message {
-  flex: 8;
+  flex: 4;
 }
 
 .chatbar-username {
-  flex: 2;
 }
 
-.message {
-  display: flex;
-  padding: 5px;
-}
-
-.message.system {
-  font-style: italic;
-  padding: 5px 20px;
-}
-
-.message-content,
-.message-username {
-  overflow: hidden;
-  margin: 5px;
-  padding: 0 10px;
-}
-
-.message-content {
-  flex: 8;
-}
-
-.message-username {
-  flex: 2;
-  font-weight: 700;
-}
 
 .navbar {
-  background: tomato;
-  border-bottom: 1px solid black;
+  background: white;
   height: 60px;
   left: 0;
   padding: 0 10px;
   position: fixed;
   right: 0;
   top: 0;
+  display: flex;
 }
 
 .navbar-brand {
-  color: inherit;
+  margin: auto;
+  color: black;
   display: block;
   float: left;
   font-weight: 700;

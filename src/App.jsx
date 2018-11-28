@@ -9,18 +9,19 @@ class App extends Component {
     this.state = {
       currentUser: { name: "Anonymous" },
       messages: [],
+      previousUser: {name: ''},
     };
     this.socket = new WebSocket('ws://localhost:3001');
 
   }
 
   //generates random id for messages
-  // generateRandomId = () => {
-  //   const S4 = () => {
-  //      return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-  //   };
-  //   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-  // }
+  generateRandomId = () => {
+    const S4 = () => {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
 
   componentDidMount = () =>{
     console.log('---component did mount -----');
@@ -34,11 +35,12 @@ class App extends Component {
       const newMessages = [...oldMessage, newMessage];
       this.setState((currentState) => {
       return {
-        currentUser: {name: newMessages.username},
+        currentUser: {name: newMessage.username},
         messages: newMessages,
+        previousUser: {name: currentState.currentUser.name}
       }
       });
-      console.log(newMessage);
+      console.log(this.state.messages);
     }
   }
 
@@ -46,20 +48,18 @@ class App extends Component {
   addMessage = (message, name) => {
     const updatedUser = name.length > 0 ? name : 'Anonymous';
     const newMessage = {
-      id: '',
+      id: this.generateRandomId(),
       username: updatedUser,
       content: message,
     };
     this.socket.send(JSON.stringify(newMessage));
   }
 
-
-
-
   render() {
     return (
       <div>
         <MessageList messagesList={this.state.messages} />
+        <Messages prevName={this.state.previousUser.name} name={this.state.currentUser.name}/>
         <Chatbar defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
       </div>
     );

@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web");
+
+.message-content {
+  background-color: #6bb9f0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+  border-radius: 10px;
+  padding: 10px 30px;
+  color: white;
+}
+
+.message-username, .message-system {
+  padding: 10px;
+}
+
+.message {
+  display: flex;
+  padding: 5px;
+}
+
+.message.system {
+  font-style: italic;
+  padding: 5px 20px;
+}
+
+.message-content,
+.message-username {
+  overflow: hidden;
+}
+
+.message-username {
+  font-weight: 700;
+  width: 72px;
+  max-width: 72px;
+}
