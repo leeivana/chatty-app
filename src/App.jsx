@@ -8,20 +8,10 @@ class App extends Component {
     super();
     this.state = {
       currentUser: { name: "Anonymous" },
-      messages: [
-        {
-          username: "Bob",
-          content: "My name is Bob",
-          id: 1
-        },
-        {
-          username: "Anonymous",
-          content: "I am anonymous",
-          id: 2
-        },
-      ]
+      messages: [],
     };
     this.socket = new WebSocket('ws://localhost:3001');
+
   }
 
   //generates random id for messages
@@ -32,10 +22,25 @@ class App extends Component {
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 
-  componentDidMount(){
+  componentDidMount = () =>{
+    console.log('---component did mount -----');
     this.socket.addEventListener('open', (e) => {
       console.log('listening')
     });
+
+    this.socket.onmessage =  this.incoming = (event) => {
+      const newMessage = JSON.parse(event.data);
+      const oldMessage = this.state.messages;
+      const newMessages = [...oldMessage, newMessage];
+      this.setState((currentState) => {
+      return {
+        currentUser: {name: newMessages.username},
+        messages: newMessages,
+      }
+      });
+      console.log(newMessage);
+    }
+
   }
 
   //adds new message to global state
@@ -46,16 +51,11 @@ class App extends Component {
       username: updatedUser,
       content: message,
     };
-    const oldMessage = this.state.messages;
-    const newMessages = [...oldMessage, newMessage];
-    this.setState((currentState) => {
-      return {
-        currentUser: {name: updatedUser},
-        messages: newMessages,
-      }
-    });
     this.socket.send(JSON.stringify(newMessage));
   }
+
+
+
 
   render() {
     return (
