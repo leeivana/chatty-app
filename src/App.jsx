@@ -15,12 +15,12 @@ class App extends Component {
   }
 
   //generates random id for messages
-  generateRandomId = () => {
-    const S4 = () => {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    };
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-  }
+  // generateRandomId = () => {
+  //   const S4 = () => {
+  //      return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  //   };
+  //   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  // }
 
   componentDidMount = () =>{
     console.log('---component did mount -----');
@@ -40,14 +40,13 @@ class App extends Component {
       });
       console.log(newMessage);
     }
-
   }
 
   //adds new message to global state
   addMessage = (message, name) => {
     const updatedUser = name.length > 0 ? name : 'Anonymous';
     const newMessage = {
-      id: this.generateRandomId(),
+      id: '',
       username: updatedUser,
       content: message,
     };
