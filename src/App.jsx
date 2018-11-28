@@ -82,10 +82,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar />
-
+        <Navbar numOfUsers={this.state.numOfUsers}/>
         <div>{this.state.numOfUsers} User(s) Online</div>
-
         <MessageList messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
         <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
