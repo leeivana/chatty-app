@@ -5,7 +5,7 @@ class MessageList extends Component{
     const generateMessages = this.props.messagesList.map(message => (
       <div className='message' key={message.id}>
         <span className='message-username'>{message.username}</span>
-        <span className='message-content'>{message.content}</span>
+        <span style={this.props.style}className='message-content'>{message.content}</span>
       </div>
     ));
 

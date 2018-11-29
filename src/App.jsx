@@ -11,6 +11,7 @@ class App extends Component {
       currentUser: { name: "Anonymous", prevName: ''},
       messages: [],
       numOfUsers: 1,
+      messageColor: '',
     };
     this.socket = new WebSocket('ws://localhost:3001');
   }
@@ -29,7 +30,6 @@ class App extends Component {
     });
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
-      console.log(payload);
       switch(payload.type) {
         case 'postMessage':
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
@@ -60,8 +60,10 @@ class App extends Component {
           });
           break;
         case 'messageColor':
-
-
+          this.setState({
+            messageColor: payload.color,
+          });
+          break;
         default:
         throw new Error('Unidentified data type' + payload.type);
       }
@@ -90,7 +92,7 @@ class App extends Component {
     return (
       <div>
         <Navbar numOfUsers={this.state.numOfUsers}/>
-        <MessageList messagesList={this.state.messages} />
+        <MessageList style={{backgroundColor: this.state.messageColor}} messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
         <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
       </div>
