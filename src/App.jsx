@@ -25,7 +25,7 @@ class App extends Component {
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
       switch(payload.type) {
-        case 'postMessage':
+        case 'incomingMessage':
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
             payload.content = <img className='message-img' src={payload.content.toString()}/>;
           }
@@ -40,7 +40,7 @@ class App extends Component {
             }
           });
           break;
-        case 'postNotification':
+        case 'incomingNotification':
           const notification = payload.content;
           this.setState((currentState) => {
             return{
@@ -66,7 +66,7 @@ class App extends Component {
 
   addMessage = (message, name) => {
     const newMessage = {
-      type: 'incomingMessage',
+      type: 'postMessage',
       username: name,
       content: message,
       color: this.state.messageColor,
@@ -76,7 +76,7 @@ class App extends Component {
 
   updateNotification = (notification) => {
     const newMessage = {
-      type: 'incomingNotification',
+      type: 'postNotification',
       content: `${notification}`,
     };
     this.socket.send(JSON.stringify(newMessage));

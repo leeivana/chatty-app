@@ -26,12 +26,13 @@ wss.on('connection', (ws) => {
   ws.on('message', (event) => {
     const data = JSON.parse(event);
     switch(data.type) {
-      case 'incomingMessage':
-        data.type = 'postMessage';
+      case 'postMessage':
+        data.type = 'incomingMessage';
         data.id = uuidv4();
         break;
-      case 'incomingNotification':
-        data.type = 'postNotification';
+      case 'postNotification':
+        data.type = 'incomingNotification';
+        data.id = uuidv4();
         break;
       default:
         throw new Error('Unknown event type: ' + data.type);
