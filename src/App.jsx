@@ -10,16 +10,11 @@ class App extends Component {
     this.state = {
       currentUser: { name: "Anonymous", prevName: ''},
       messages: [],
-      numOfUsers: 1,
+      numOfUsers: 0,
+      messageColor: '',
+      userId: '',
     };
     this.socket = new WebSocket('ws://localhost:3001');
-  }
-
-  generateRandomId = () => {
-    const S4 = () => {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    };
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 
   componentDidMount = () =>{
@@ -52,18 +47,19 @@ class App extends Component {
               currentUser: {name: notification, prevName: ''}
             }
           });
+          break;
         case 'num':
           this.setState({
             numOfUsers: payload.numOfUsers,
           });
           break;
-        // case 'messageColor':
-        //   this.setState({
-        //
-        //   });
-        //   break;
+        case 'messageColor':
+          this.setState({
+            messageColor: payload.color,
+          });
+          break;
         default:
-        throw new Error('Unidentified data type' + payload.type);
+          throw new Error('Unidentified data type' + payload.type);
       }
     }
   }
@@ -71,9 +67,9 @@ class App extends Component {
   addMessage = (message, name) => {
     const newMessage = {
       type: 'incomingMessage',
-      id: this.generateRandomId(),
       username: name,
       content: message,
+      color: this.state.messageColor,
     };
     this.socket.send(JSON.stringify(newMessage));
   }

@@ -1,5 +1,3 @@
-// server.js
-
 const express = require('express');
 const SocketServer = require('ws').Server;
 const uuidv4 = require('uuid/v4');
@@ -14,23 +12,23 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 const colors = [
+  '#6bb9f0',
   '#875F9A',
   '#59ABE3',
-  '#6bb9f0',
   '#407A52',
 ];
 
-const CLIENTS = [];
 let numOfConnected = 0;
 
 wss.on('connection', (ws) => {
   numOfConnected ++;
-  CLIENTS.push(ws);
+  ws.send(JSON.stringify({type: 'messageColor', color: colors[numOfConnected]}));
   ws.on('message', (event) => {
     const data = JSON.parse(event);
     switch(data.type) {
       case 'incomingMessage':
         data.type = 'postMessage';
+        data.id = uuidv4();
         break;
       case 'incomingNotification':
         data.type = 'postNotification';
@@ -38,11 +36,8 @@ wss.on('connection', (ws) => {
       default:
         throw new Error('Unknown event type: ' + data.type);
     }
-    let i = 0;
     wss.clients.forEach(function each(client) {
-      // CLIENTS[index].send(JSON.stringify({type: 'messageColor', color: colors[index]}));
-      client.send(JSON.stringify({...data, color: colors[i]}));
-      i++;
+      client.send(JSON.stringify({...data}));
     });
   })
 
