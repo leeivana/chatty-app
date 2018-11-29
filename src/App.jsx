@@ -29,6 +29,7 @@ class App extends Component {
     });
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
+      console.log(payload);
       switch(payload.type) {
         case 'postMessage':
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
@@ -58,6 +59,9 @@ class App extends Component {
             numOfUsers: payload.numOfUsers,
           });
           break;
+        case 'messageColor':
+
+
         default:
         throw new Error('Unidentified data type' + payload.type);
       }

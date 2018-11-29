@@ -17,13 +17,18 @@ const server = express()
 const wss = new SocketServer({ server });
 const colors = [
   '#875F9A',
-  '#59ABE3'
-]
+  '#59ABE3',
+  '#6bb9f0',
+  '#407A52',
+];
+
+const CLIENTS = [];
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
+  CLIENTS.push(ws);
   ws.on('message', (event) => {
     const data = JSON.parse(event);
     switch(data.type) {
@@ -37,7 +42,10 @@ wss.on('connection', (ws) => {
         throw new Error('Unknown event type: ' + data.type);
     }
     wss.clients.forEach(function each(client) {
-       client.send(JSON.stringify(data));
+      for(let i in colors){
+        client.send(JSON.stringify({type: 'messageColor', color: colors[i]}));
+      }
+      client.send(JSON.stringify(data));
     });
   })
 
@@ -49,7 +57,7 @@ wss.on('connection', (ws) => {
       }
       client.send(JSON.stringify(numOfUsers));
     })
-  }, 5000)
+  }, 2000)
 
   console.log('Listening on 3001');
 
