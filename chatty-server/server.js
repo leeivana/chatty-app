@@ -38,12 +38,10 @@ wss.on('connection', (ws) => {
         break;
       case 'postNotification':
         data.type = 'incomingNotification';
-
         if(users[data.id] !== data.content) {
           data.oldUser = users[data.id];
           users[data.id] = data.content;
         }
-
         break;
       default:
         throw new Error('Unknown event type: ' + data.type);
