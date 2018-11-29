@@ -11,7 +11,6 @@ class App extends Component {
       currentUser: { name: "Anonymous", prevName: ''},
       messages: [],
       numOfUsers: 1,
-      messageColor: '',
     };
     this.socket = new WebSocket('ws://localhost:3001');
   }
@@ -35,7 +34,7 @@ class App extends Component {
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
             payload.content = <img className='message-img' src={payload.content.toString()}/>;
           }
-          console.log(payload.content);
+          console.log(payload)
           const newMessage = payload;
           const oldMessage = this.state.messages;
           const newMessages = [...oldMessage, newMessage];
@@ -43,7 +42,6 @@ class App extends Component {
             return {
               currentUser: {name: newMessage.username},
               messages: newMessages,
-              numOfUsers: payload.numOfUsers,
             }
           });
           break;
@@ -59,11 +57,11 @@ class App extends Component {
             numOfUsers: payload.numOfUsers,
           });
           break;
-        case 'messageColor':
-          this.setState({
-            messageColor: payload.color,
-          });
-          break;
+        // case 'messageColor':
+        //   this.setState({
+        //
+        //   });
+        //   break;
         default:
         throw new Error('Unidentified data type' + payload.type);
       }
@@ -76,7 +74,6 @@ class App extends Component {
       id: this.generateRandomId(),
       username: name,
       content: message,
-      numOfUsers: this.state.numOfUsers,
     };
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -92,7 +89,7 @@ class App extends Component {
     return (
       <div>
         <Navbar numOfUsers={this.state.numOfUsers}/>
-        <MessageList style={{backgroundColor: this.state.messageColor}} messagesList={this.state.messages} />
+        <MessageList messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
         <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
       </div>
