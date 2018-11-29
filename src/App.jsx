@@ -51,7 +51,8 @@ class App extends Component {
                 ...this.state.usernames,
                 {
                   oldUser: payload.oldUser,
-                  newUser: payload.content
+                  newUser: payload.content,
+                  key: payload.key,
                 }
               ]
             });
@@ -92,7 +93,8 @@ class App extends Component {
     const newMessage = {
       type: "postNotification",
       content: currentName,
-      id: this.state.currentid
+      id: this.state.currentid,
+      key: '',
     };
     this.socket.send(JSON.stringify(newMessage));
   };

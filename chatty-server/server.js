@@ -41,6 +41,7 @@ wss.on('connection', (ws) => {
         if(users[data.id] !== data.content) {
           data.oldUser = users[data.id];
           users[data.id] = data.content;
+          data.key = uuidv4();
         }
         break;
       default:
