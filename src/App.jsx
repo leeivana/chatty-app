@@ -32,8 +32,7 @@ class App extends Component {
       switch(payload.type) {
         case 'postMessage':
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
-            payload.content = `<img src=${payload.content} />`;
-            console.log('in');
+            payload.content = <img src={payload.content.toString()}/>;
           }
           console.log(payload.content);
           const newMessage = payload;
