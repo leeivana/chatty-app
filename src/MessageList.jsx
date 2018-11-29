@@ -9,7 +9,6 @@ class MessageList extends Component{
       </div>
     ));
 
-
     return (
       <main className='messages'>
           {generateMessages}

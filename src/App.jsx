@@ -9,6 +9,7 @@ class App extends Component {
     super();
     this.state = {
       currentUser: { name: "Anonymous" },
+      currentid: '',
       messages: [],
       numOfUsers: 0,
       messageColor: '',
@@ -24,6 +25,7 @@ class App extends Component {
     });
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
+      // console.log(payload);
       switch(payload.type) {
         case 'incomingMessage':
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
@@ -38,15 +40,18 @@ class App extends Component {
               messages: newMessages,
             }
           });
-          this.setState({
-           usernames: this.filterByColor(this.state.messageColor)
-          })
-          console.log(this.state.usernames);
           break;
         case 'incomingNotification':
-          this.setState({
-            currentUser: {name: payload.content},
-          })
+            if(payload.oldUser){
+              this.setState({
+                usernames: [ ...this.state.usernames,
+                  {
+                    oldUser: payload.oldUser,
+                    newUser: payload.content,
+                  }
+                ]
+              });
+            }
           break;
         case 'num':
           this.setState({
@@ -58,15 +63,10 @@ class App extends Component {
             messageColor: payload.color,
           });
           break;
-        // case 'userID':
-        //   this.setState(currentState => {
-        //     return {
-        //       userID : {
-        //       id: payload.userid,
-        //       currentName: this.state.currentUser.name,
-        //       }
-        //     }
-        //   });
+        case 'userid':
+          this.setState({
+            currentid: payload.id,
+          });
           break;
         default:
           throw new Error('Unidentified data type' + payload.type);
@@ -74,10 +74,10 @@ class App extends Component {
       }
     }
 
-  filterByColor = (messageColor) => {
-    const filtered = this.state.messages.filter((message) => message.color === messageColor);
-    return filtered;
-  }
+  // filterByColor = (messageColor) => {
+  //   const filtered = this.state.messages.filter((message) => message.color === messageColor);
+  //   return filtered;
+  // }
 
   addMessage = (message, name) => {
     const newMessage = {
@@ -85,7 +85,7 @@ class App extends Component {
       username: name,
       content: message,
       color: this.state.messageColor,
-      usernames: this.filterByColor(this.state.messageColor)
+      // usernames: this.filterByColor(this.state.messageColor)
     };
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -94,6 +94,7 @@ class App extends Component {
     const newMessage = {
       type: 'postNotification',
       content: currentName,
+      id: this.state.currentid,
     };
     this.socket.send(JSON.stringify(newMessage));
   }
@@ -103,7 +104,7 @@ class App extends Component {
         <Navbar numOfUsers={this.state.numOfUsers}/>
         <MessageList messagesList={this.state.messages} />
         <Chatbar updateNotification={this.updateNotification} defaultName={this.state.currentUser.name} addMessage={this.addMessage}/>
-        <Messages oldInfo={this.state.currentUser.name} newInfo={this.state.currentUser.name}/>
+        <Messages info={this.state.usernames}/>
       </div>
     );
   }

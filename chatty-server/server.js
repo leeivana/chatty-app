@@ -20,8 +20,13 @@ const colors = [
 
 let numOfConnected = 0;
 
+const users = {};
+
 wss.on('connection', (ws) => {
   numOfConnected ++;
+  const id = uuidv4();
+  users[id] = 'Anonymous';
+  ws.send(JSON.stringify({type: 'userid', id: id}))
   ws.send(JSON.stringify({type: 'messageColor', color: colors[numOfConnected]}));
 
   ws.on('message', (event) => {
@@ -33,6 +38,12 @@ wss.on('connection', (ws) => {
         break;
       case 'postNotification':
         data.type = 'incomingNotification';
+
+        if(users[data.id] !== data.content) {
+          data.oldUser = users[data.id];
+          users[data.id] = data.content;
+        }
+
         break;
       default:
         throw new Error('Unknown event type: ' + data.type);
@@ -54,6 +65,7 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     numOfConnected --;
+    delete users[id];
     wss.clients.forEach(function each(client) {
       const numOfUsers = {
         type: 'num',
@@ -61,6 +73,7 @@ wss.on('connection', (ws) => {
       }
       client.send(JSON.stringify(numOfUsers));
     });
+    console.log(users);
     console.log('Client disconnected');
   });
 });
