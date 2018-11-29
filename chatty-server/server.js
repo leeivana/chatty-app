@@ -42,10 +42,6 @@ wss.on('connection', (ws) => {
         throw new Error('Unknown event type: ' + data.type);
     }
     wss.clients.forEach(function each(client) {
-      // for(let i in CLIENTS){
-      //   client.send(JSON.stringify({type: 'messageColor', color: colors[i]}));
-      // }
-
       let i = 0;
       while(i < CLIENTS.length){
         CLIENTS[i].send(JSON.stringify({type: 'messageColor', color: colors[i]}));
