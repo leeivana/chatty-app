@@ -12,7 +12,7 @@ class App extends Component {
       messages: [],
       numOfUsers: 0,
       messageColor: '',
-      userId: '',
+      userID: '',
     };
     this.socket = new WebSocket('ws://localhost:3001');
   }
@@ -29,7 +29,6 @@ class App extends Component {
           if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
             payload.content = <img className='message-img' src={payload.content.toString()}/>;
           }
-          console.log(payload)
           const newMessage = payload;
           const oldMessage = this.state.messages;
           const newMessages = [...oldMessage, newMessage];
@@ -58,9 +57,15 @@ class App extends Component {
             messageColor: payload.color,
           });
           break;
+        case 'userID':
+          this.setState({
+            userID : payload.userid,
+          });
+          break;
         default:
           throw new Error('Unidentified data type' + payload.type);
       }
+      console.log(payload);
     }
   }
 
