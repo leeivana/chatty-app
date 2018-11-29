@@ -27,14 +27,15 @@ class App extends Component {
     this.socket.addEventListener('open', (e) => {
       console.log('listening')
     });
-
-  const isUrl = new RegExp('^(https?:\/\/)?');
-
     this.socket.onmessage =  this.incoming = (event) => {
       const payload = JSON.parse(event.data);
       switch(payload.type) {
         case 'postMessage':
-
+          if(/(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)){
+            payload.content = `<img src=${payload.content} />`;
+            console.log('in');
+          }
+          console.log(payload.content);
           const newMessage = payload;
           const oldMessage = this.state.messages;
           const newMessages = [...oldMessage, newMessage];
