@@ -8,11 +8,11 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: { name: "Anonymous", prevName: ''},
+      currentUser: { name: "Anonymous" },
       messages: [],
       numOfUsers: 0,
       messageColor: '',
-      userID: '',
+      usernames: [],
     };
     this.socket = new WebSocket('ws://localhost:3001');
   }
@@ -38,14 +38,15 @@ class App extends Component {
               messages: newMessages,
             }
           });
+          this.setState({
+           usernames: this.filterByColor(this.state.messageColor)
+          })
+          console.log(this.state.usernames);
           break;
         case 'incomingNotification':
-          const notification = payload.content;
-          this.setState((currentState) => {
-            return{
-              currentUser: {name: notification, prevName: ''}
-            }
-          });
+          this.setState({
+            currentUser: {name: payload.content},
+          })
           break;
         case 'num':
           this.setState({
@@ -57,16 +58,25 @@ class App extends Component {
             messageColor: payload.color,
           });
           break;
-        case 'userID':
-          this.setState({
-            userID : payload.userid,
-          });
+        // case 'userID':
+        //   this.setState(currentState => {
+        //     return {
+        //       userID : {
+        //       id: payload.userid,
+        //       currentName: this.state.currentUser.name,
+        //       }
+        //     }
+        //   });
           break;
         default:
           throw new Error('Unidentified data type' + payload.type);
+        }
       }
-      console.log(payload);
     }
+
+  filterByColor = (messageColor) => {
+    const filtered = this.state.messages.filter((message) => message.color === messageColor);
+    return filtered;
   }
 
   addMessage = (message, name) => {
@@ -75,14 +85,15 @@ class App extends Component {
       username: name,
       content: message,
       color: this.state.messageColor,
+      usernames: this.filterByColor(this.state.messageColor)
     };
     this.socket.send(JSON.stringify(newMessage));
   }
 
-  updateNotification = (notification) => {
+  updateNotification = (currentName) => {
     const newMessage = {
       type: 'postNotification',
-      content: `${notification}`,
+      content: currentName,
     };
     this.socket.send(JSON.stringify(newMessage));
   }

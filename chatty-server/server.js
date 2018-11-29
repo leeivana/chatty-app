@@ -23,7 +23,6 @@ let numOfConnected = 0;
 wss.on('connection', (ws) => {
   numOfConnected ++;
   ws.send(JSON.stringify({type: 'messageColor', color: colors[numOfConnected]}));
-  ws.send(JSON.stringify({type: 'userID', userid: uuidv4()}));
 
   ws.on('message', (event) => {
     const data = JSON.parse(event);
@@ -34,7 +33,6 @@ wss.on('connection', (ws) => {
         break;
       case 'postNotification':
         data.type = 'incomingNotification';
-        // data.id = uuidv4();
         break;
       default:
         throw new Error('Unknown event type: ' + data.type);
