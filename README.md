@@ -9,16 +9,16 @@ Fork and clone the respository
 
 ```
 git clone git@github.com:{yourUsername}chatty-app/.git
-cd `chatty-app`
-Install dependencies using `npm install`
+cd chatty-app
+Install dependencies using npm install
 ```
 
 Install the dependencies and start the server.
 
 ```
-cd `chatty-server`
-Install dependencies using `npm install`
-Start the server using `npm start`
+cd chatty-server
+Install dependencies using npm install
+Start the server using npm start
 ```
 
 ### Screenshots
