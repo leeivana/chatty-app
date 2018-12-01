@@ -23,7 +23,7 @@ Start the server using npm start
 
 ### Screenshots
 !["Screenshot of Chatty App"](https://github.com/leeivana/chatty-app/blob/master/public/docs/Chatty-App-Main.png?raw=true)
-!["Screenshot of Multiple Users"](url)
+!["Screenshot of Multiple Users"](https://github.com/leeivana/chatty-app/blob/master/public/docs/Chatty-App-Name-Change.png?raw=true)
 
 
 ### Dependencies
