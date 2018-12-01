@@ -22,8 +22,7 @@ Start the server using npm start
 ```
 
 ### Screenshots
-!["Screenshot of Chat App"](url)
-!["Screenshot Image Feature"](url)
+!["Screenshot of Chatty App"](https://github.com/leeivana/chatty-app/blob/master/public/docs/Chatty-App-Main.png?raw=true)
 !["Screenshot of Multiple Users"](url)
 
 
