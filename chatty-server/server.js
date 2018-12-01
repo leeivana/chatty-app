@@ -62,7 +62,6 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     numOfConnected --;
-    delete users[id];
     wss.clients.forEach(function each(client) {
       const numOfUsers = {
         type: 'num',
@@ -70,6 +69,7 @@ wss.on('connection', (ws) => {
       }
       client.send(JSON.stringify(numOfUsers));
     });
+    delete users[id];
     console.log('Client disconnected');
   });
 });

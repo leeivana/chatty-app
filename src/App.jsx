@@ -48,7 +48,6 @@ class App extends Component {
           if (payload.oldUser) {
             this.setState({
               usernames: [
-                // ...this.state.usernames,
                 {
                   oldUser: payload.oldUser,
                   newUser: payload.content,
