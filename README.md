@@ -1,7 +1,8 @@
 Chatty App
 =====================
 
-A minimal and light dev chat app created with ReactJS.
+Client-side minimal and light single page app created with ReactJS. 
+The client-side app communicates with a server via Websockets for multi-user real-time experience
 
 ### Getting Started
 
