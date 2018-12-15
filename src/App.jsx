@@ -19,9 +19,7 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    console.log("---component did mount -----");
     this.socket.addEventListener("open", e => {
-      console.log("listening");
     });
     this.socket.onmessage = this.incoming = event => {
       const payload = JSON.parse(event.data);
@@ -37,11 +35,9 @@ class App extends Component {
           const newMessage = payload;
           const oldMessage = this.state.messages;
           const newMessages = [...oldMessage, newMessage];
-          this.setState(currentState => {
-            return {
+          this.setState({
               currentUser: { name: newMessage.username },
               messages: newMessages
-            };
           });
           break;
         case "incomingNotification":
@@ -93,7 +89,7 @@ class App extends Component {
       type: "postNotification",
       content: currentName,
       id: this.state.currentid,
-      key: '',
+      key: "",
     };
     this.socket.send(JSON.stringify(newMessage));
   };

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 
 class Chatbar extends Component {
   constructor(props){
     super(props);
     this.state = {
-      message: '',
-      username: 'Anonymous',
+      message: "",
+      username: "Anonymous",
     }
   }
 
@@ -19,17 +19,17 @@ class Chatbar extends Component {
     });
   }
 
-   handleKeypress = (e) => {
-    if(e.key === 'Enter'){
+   handleKeypress = (element) => {
+    if(element.key === "Enter"){
       this.props.addMessage(this.state.message, this.state.username);
       this.props.updateNotification(this.state.username);
       this.setState(currentState => {
         return {
-          message: '',
+          message: "",
           username: this.state.username,
         }
       });
-      e.target.value = '';
+      element.target.value = "";
     }
   }
 
