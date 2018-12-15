@@ -15,16 +15,18 @@ class App extends Component {
       messageColor: "",
       usernames: []
     };
+    //Creates new websocket
     this.socket = new WebSocket("ws://localhost:3001");
   }
 
   componentDidMount = () => {
-    this.socket.addEventListener("open", e => {
+    this.socket.addEventListener("open", event => {
     });
     this.socket.onmessage = this.incoming = event => {
       const payload = JSON.parse(event.data);
       switch (payload.type) {
         case "incomingMessage":
+        //Puts message into a img tag if img is a link that ends in jpg/gif/png
           if (
             /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/.test(payload.content)
           ) {
@@ -73,7 +75,7 @@ class App extends Component {
       }
     };
   };
-
+//Sends a message to server with username and corresponding message
   addMessage = (message, name) => {
     const newMessage = {
       type: "postMessage",
@@ -83,7 +85,7 @@ class App extends Component {
     };
     this.socket.send(JSON.stringify(newMessage));
   };
-
+//Sends message to server when the state of the name is changed
   updateNotification = currentName => {
     const newMessage = {
       type: "postNotification",
