@@ -15,12 +15,14 @@ const colors = [
   '#59ABE3',
   '#407A52',
 ];
-
+//Initial number of users connected to the server
 let numOfConnected = 0;
 
+//object that will store connected users
 const users = {};
 
 wss.on('connection', (ws) => {
+  //numofConnected increases once there is a new connection
   numOfConnected ++;
   const id = uuidv4();
   users[id] = 'Anonymous';
@@ -50,6 +52,7 @@ wss.on('connection', (ws) => {
     });
   })
 
+  //Sends message to client each time there is an new connection
   wss.clients.forEach(function each(client) {
     const numOfUsers = {
       type: 'num',
@@ -60,6 +63,7 @@ wss.on('connection', (ws) => {
 
   console.log('Listening on 3001');
 
+  //On connection close, server sends updated count of connectd users
   ws.on('close', () => {
     numOfConnected --;
     wss.clients.forEach(function each(client) {
@@ -69,6 +73,7 @@ wss.on('connection', (ws) => {
       }
       client.send(JSON.stringify(numOfUsers));
     });
+    //Deletes user from user object
     delete users[id];
     console.log('Client disconnected');
   });
