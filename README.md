@@ -9,7 +9,7 @@ The client-side app communicates with a server via Websockets for multi-user rea
 Fork and clone the respository
 
 ```
-git clone git@github.com:{yourUsername}chatty-app/.git
+git clone git@github.com:leeivana/chatty-app/.git
 cd chatty-app
 Install dependencies using npm install
 ```
