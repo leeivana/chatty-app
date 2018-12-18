@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: { name: "Anonymous" },
+      currentUser: { name: "" },
       currentid: "",
       messages: [],
       numOfUsers: 0,
@@ -24,6 +24,7 @@ class App extends Component {
     });
     this.socket.onmessage = this.incoming = event => {
       const payload = JSON.parse(event.data);
+      //switch case depending on type of incoming data
       switch (payload.type) {
         case "incomingMessage":
         //Puts message into a img tag if img is a link that ends in jpg/gif/png
@@ -44,14 +45,16 @@ class App extends Component {
           break;
         case "incomingNotification":
           if (payload.oldUser) {
+            const usernameChangeMessage = {
+              type: "changeName",
+              oldUser: payload.oldUser,
+              newUser: payload.content,
+              key: payload.key,
+            }
+            const oldMessage = this.state.messages;
+            const newMessages = [...oldMessage, usernameChangeMessage];
             this.setState({
-              usernames: [
-                {
-                  oldUser: payload.oldUser,
-                  newUser: payload.content,
-                  key: payload.key,
-                }
-              ]
+              messages: newMessages,
             });
           }
           break;

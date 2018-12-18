@@ -9,7 +9,7 @@ class Chatbar extends Component {
     }
   }
 
-//Gets the value of the username input field and text input field and updates the state
+  //Gets the value of the username input field and text input field and updates the state
   handleInputChange = event => {
     const target = event.target;
     const value = target.value;
@@ -20,9 +20,10 @@ class Chatbar extends Component {
     });
   }
 
-//Calls the addMessage / updateNotification function that sends a message to the server containing the message and username
+  //Calls the addMessage which sends a message to the server containing the message and username
    handleKeypress = event => {
     if(event.key === "Enter"){
+      this.props.updateNotification(this.state.username);
       this.props.addMessage(this.state.message, this.state.username);
       this.setState({
         message: "",
@@ -31,7 +32,7 @@ class Chatbar extends Component {
       event.target.value = "";
     }
   }
-
+  //Calls updateNotification which sends a message to the server containing the modified username
   handleChangeName = event => {
     if(event.key !== "Enter")
       return;

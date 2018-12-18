@@ -7,7 +7,7 @@ class Messages extends Component{
     ));
     return (
       <div>
-      {generateNames}
+        {generateNames}
       </div>
     );
   }
