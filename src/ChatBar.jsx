@@ -10,7 +10,7 @@ class Chatbar extends Component {
   }
 
 //Gets the value of the username input field and text input field and updates the state
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -19,17 +19,23 @@ class Chatbar extends Component {
       [name]: value,
     });
   }
+
 //Calls the addMessage / updateNotification function that sends a message to the server containing the message and username
-   handleKeypress = (event) => {
+   handleKeypress = event => {
     if(event.key === "Enter"){
       this.props.addMessage(this.state.message, this.state.username);
-      this.props.updateNotification(this.state.username);
       this.setState({
         message: "",
         username: this.state.username,
       });
       event.target.value = "";
     }
+  }
+
+  handleChangeName = event => {
+    if(event.key !== "Enter")
+      return;
+    this.props.updateNotification(this.state.username);
   }
 
   render(){
@@ -42,6 +48,7 @@ class Chatbar extends Component {
           placeholder="Your Name (Optional)"
           defaultValue={this.state.username}
           onChange={this.handleInputChange}
+          onKeyDown={this.handleChangeName}
         />
         <input
           name="message"
