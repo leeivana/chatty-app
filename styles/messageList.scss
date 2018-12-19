@@ -31,10 +31,13 @@
 
 .message-username {
   font-weight: 700;
-  width: 72px;
-  max-width: 72px;
+  margin-right: 1%;
 }
 
-.message-img{
+.message-img {
   max-width: 20vw;
+}
+
+.notification {
+  padding: 5px 14px;
 }

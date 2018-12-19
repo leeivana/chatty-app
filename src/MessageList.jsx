@@ -5,7 +5,7 @@ class MessageList extends Component{
     const generateMessages = this.props.messagesList.map(message => {
       if(message.type === 'changeName'){
         return (
-          <div key={message.key} className="message">{message.oldUser} changed their name to {message.newUser}<br/></div>
+          <div key={message.key} className="notification">{message.oldUser} changed their name to {message.newUser}<br/></div>
         );
       }
       return (

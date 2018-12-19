@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import MessageBar from './MessageBar.jsx';
+import UsernameBar from './UsernameBar.jsx';
 
 class Chatbar extends Component {
   constructor(props){
@@ -43,18 +45,12 @@ class Chatbar extends Component {
     return (
       <div>
       <footer className="chatbar">
-        <input
-          name="username"
-          className="chatbar-username"
-          placeholder="Your Name (Optional)"
+        <UsernameBar
           defaultValue={this.state.username}
           onChange={this.handleInputChange}
           onKeyDown={this.handleChangeName}
         />
-        <input
-          name="message"
-          className="chatbar-message"
-          placeholder="Write a message ... "
+        <MessageBar
           onChange={this.handleInputChange}
           value={this.state.value}
           onKeyDown={this.handleKeypress}
