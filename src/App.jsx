@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Chatbar from "./ChatBar.jsx";
+import ChatbarContainer from "./ChatbarContainer.jsx";
 import MessageList from "./MessageList.jsx";
 import Messages from "./Messages.jsx";
 import Navbar from "./Navbar.jsx";
@@ -103,7 +103,7 @@ class App extends Component {
       <div>
         <Navbar numOfUsers={this.state.numOfUsers} />
         <MessageList messagesList={this.state.messages} />
-        <Chatbar
+        <ChatbarContainer
           updateNotification={this.updateNotification}
           defaultName={this.state.currentUser.name}
           addMessage={this.addMessage}
